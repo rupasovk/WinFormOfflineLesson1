@@ -117,5 +117,40 @@ namespace WinFormAfflineLesson
             }
         }
         #endregion
+
+        #region Сегодняшние дни рождения
+        private void button1_Click(object sender, EventArgs e)
+        {
+            db = new DbRepository();
+            db.Employees.Load();
+            var first = db.Employees.Local.ToBindingList();
+            var second = first.Where(s => s.Birthday.Day == DateTime.Now.Day).ToList();
+
+            dataGridView1.DataSource = second;
+            dataGridView1.Update();
+        }
+        #endregion
+
+        #region Ближайшие дни рождения
+        private void button2_Click(object sender, EventArgs e)
+        {
+            db = new DbRepository();
+            db.Employees.Load();
+            var first = db.Employees.Local.ToBindingList();
+
+            var second = first.Where(w => w.Birthday > DateTime.Now.AddDays(-7) && w.Birthday < DateTime.Now.AddDays(7)).ToList();
+            dataGridView1.DataSource = second;
+            dataGridView1.Update();
+        }
+        #endregion
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            db = new DbRepository();
+            db.Employees.Load();
+
+            dataGridView1.DataSource = db.Employees.Local.ToBindingList();
+            dataGridView1.Update();
+        }
     }
 }
